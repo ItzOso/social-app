@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { PostsContext } from "../context/postsContext";
-import Post from "./post";
+import Post from "./Post";
 
 function Posts() {
   const { posts, loading } = useContext(PostsContext);
