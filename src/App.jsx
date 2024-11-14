@@ -32,7 +32,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Route>
         <Route
-          path="signup"
+          path="/signup"
           element={
             <AuthRedirect>
               <Signup />
@@ -40,7 +40,7 @@ function App() {
           }
         />
         <Route
-          path="signin"
+          path="/signin"
           element={
             <AuthRedirect>
               <Signin />

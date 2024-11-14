@@ -68,7 +68,7 @@ function Sidebar() {
 
       <p className="my-6 font-semibold">Suggested</p>
       {filteredUsers &&
-        filteredUsers.map((user) => <ProfileCard user={user} />)}
+        filteredUsers.map((user) => <ProfileCard key={user.uid} user={user} />)}
     </div>
   );
 }
