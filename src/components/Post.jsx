@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import IconButton from "./IconButton";
 import { FaHeart } from "react-icons/fa";
 import { FaComment } from "react-icons/fa";
@@ -12,12 +12,16 @@ import {
 } from "firebase/firestore";
 import { db, storage } from "../firebase/firebaseConfig";
 import { deleteObject, ref } from "firebase/storage";
-import { clickLike, deletePost } from "../firebase/posts";
+import { clickLike, createComment, deletePost } from "../firebase/posts";
 import { useNavigate } from "react-router-dom";
+import defaultProfile from "../images/defaultPfp.jpeg";
+import Comment from "./Comment";
 
 function Post({ post }) {
+  const [comment, setComment] = useState("");
   const { currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [commentsOpen, setCommentsOpen] = useState(false);
   // Convert to JavaScript Date object
   const date = post.createdAt.toDate();
 
@@ -45,6 +49,20 @@ function Post({ post }) {
     }
   };
 
+  const handleCreateComment = async (e) => {
+    e.preventDefault();
+
+    if (comment) {
+      try {
+        await createComment(post, currentUser.userData, comment);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    setComment("");
+  };
+
   return (
     <div className="bg-secondary p-6 rounded-md flex flex-col gap-4">
       <div className="flex justify-between items-center">
@@ -69,7 +87,7 @@ function Post({ post }) {
             onClick={handleDeletePost}
             className="bg-red-600 rounded-md text-sm px-4 py-2 text-white hover:brightness-95"
           >
-            DELETE
+            Delete
           </button>
         )}
       </div>
@@ -90,8 +108,38 @@ function Post({ post }) {
           icon={FaComment}
           text={post.comments.length}
           fontSize={"base"}
+          onClick={() => setCommentsOpen(!commentsOpen)}
         />
       </div>
+
+      {/* comment section */}
+      {commentsOpen && (
+        <div className="space-y-3">
+          {/* add comment */}
+          <form
+            onSubmit={handleCreateComment}
+            className="flex gap-3 items-center"
+          >
+            <img
+              className="rounded-full w-[40px] h-[40px]"
+              src={currentUser.userData.profilePic}
+              alt=""
+            />
+            <input
+              placeholder="Share something..."
+              className="w-full p-3 rounded-md"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              type="text"
+              maxLength={1000}
+            />
+          </form>
+
+          {post.comments.map((comment) => (
+            <Comment comment={comment} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

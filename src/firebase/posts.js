@@ -1,4 +1,4 @@
-import { arrayRemove, arrayUnion, deleteDoc, doc, updateDoc } from "firebase/firestore";
+import { arrayRemove, arrayUnion, deleteDoc, doc, Timestamp, updateDoc } from "firebase/firestore";
 import { db } from "./firebaseConfig";
 import { deleteObject, ref } from "firebase/storage";
 
@@ -18,13 +18,39 @@ export const deletePost = async (post) => {
 
   export const clickLike = async (post, userId, hasliked) => {
     const postRef = doc(db, "posts", post.id);
-    if (!hasliked) {
+    try {
+      if (!hasliked) {
+        await updateDoc(postRef, {
+          likes: arrayUnion(userId),
+        });
+      } else {
+        await updateDoc(postRef, {
+          likes: arrayRemove(userId),
+        });
+      }
+    } catch (error) {
+      console.log("Error clicking like:", error)
+      throw error
+    }
+  }
+
+  export const createComment = async (post, user, comment) => {
+    console.log(user)
+    try {
+      const postRef = doc(db, "posts", post.id)
+    const newComment = {
+      uid: user.uid,
+      profilePic: user.profilePic,
+      username: user.username,
+      comment: comment,
+      createdAt: Timestamp.now(),
+    }
+    const updatedComments = [newComment, ...post.comments]
       await updateDoc(postRef, {
-        likes: arrayUnion(userId),
-      });
-    } else {
-      await updateDoc(postRef, {
-        likes: arrayRemove(userId),
-      });
+        comments: updatedComments
+      })
+    } catch (error) {
+      console.log("Error creating comment:", error)
+      throw error
     }
   }
