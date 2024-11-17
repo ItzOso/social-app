@@ -136,7 +136,7 @@ function Post({ post }) {
           </form>
 
           {post.comments.map((comment) => (
-            <Comment comment={comment} />
+            <Comment comment={comment} post={post} />
           ))}
         </div>
       )}

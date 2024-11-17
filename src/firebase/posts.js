@@ -54,3 +54,15 @@ export const deletePost = async (post) => {
       throw error
     }
   }
+
+  export const deleteComment = async (post, comment) => {
+    try {
+      const postRef = doc(db, "posts", post.id)
+      await updateDoc(postRef, {
+        comments: arrayRemove(comment)
+      })
+    } catch (error) {
+      console.log("Error deleting comment:", error)
+      throw error
+    }
+  }

@@ -117,7 +117,7 @@ function CreatePost() {
             text="Image"
             onClick={() => fileInputRef.current.click()}
           />
-          <IconButton icon={FaVideo} text="Video" />
+          {/* <IconButton icon={FaVideo} text="Video" /> */}
         </div>
         <button
           onClick={handleCreatePost}

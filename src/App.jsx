@@ -8,6 +8,7 @@ import ProtectedRoute from "./components/auth/ProtectedRoute";
 import Signin from "./pages/auth/Signin";
 import AuthRedirect from "./components/auth/AuthRedirect";
 import Profile from "./pages/Profile";
+import Explore from "./pages/Explore";
 function App() {
   return (
     <BrowserRouter>
@@ -18,6 +19,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/explore"
+            element={
+              <ProtectedRoute>
+                <Explore />
               </ProtectedRoute>
             }
           />

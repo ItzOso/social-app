@@ -1,9 +1,11 @@
 import React, { useContext } from "react";
 import { PostsContext } from "../context/postsContext";
 import Post from "./Post";
+import { AuthContext } from "../context/authContext";
+import { useNavigate } from "react-router-dom";
 
-function Posts() {
-  const { posts, loading } = useContext(PostsContext);
+function Posts({ posts, loading }) {
+  const navigate = useNavigate();
 
   if (loading) {
     return <div>Loading...</div>;

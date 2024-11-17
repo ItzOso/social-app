@@ -1,8 +1,9 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../context/authContext";
 import { useNavigate } from "react-router-dom";
+import { deleteComment } from "../firebase/posts";
 
-function Comment({ comment }) {
+function Comment({ comment, post }) {
   const { currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
   // Format using JavaScript's Date methods
@@ -11,6 +12,14 @@ function Comment({ comment }) {
   const formattedTime = date.toLocaleTimeString();
 
   const formattedCreatedAt = formattedDate + " " + formattedTime;
+
+  const handleDeleteComment = async () => {
+    try {
+      await deleteComment(post, comment);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="flex bg-background p-4 rounded-md gap-3">
@@ -29,7 +38,10 @@ function Comment({ comment }) {
           </p>
           <p className="text-sm text-gray-500">{formattedCreatedAt}</p>
           {currentUser.user.uid === comment.uid && (
-            <button className="bg-red-600 ml-2 rounded-md text-xs p-1 px-2 text-white hover:brightness-95">
+            <button
+              onClick={handleDeleteComment}
+              className="bg-red-600 ml-2 rounded-md text-xs p-1 px-2 text-white hover:brightness-95"
+            >
               Delete
             </button>
           )}
