@@ -15,7 +15,7 @@ function Feed() {
   const { currentUser } = useContext(AuthContext);
 
   const followedPosts = posts.filter((post) =>
-    currentUser.userData.following.includes(post.uid) || post.uid === currentUser.uid
+    currentUser.userData.following.includes(post.uid) || post.uid == currentUser.uid
   );
 
   return (
