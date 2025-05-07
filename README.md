@@ -19,7 +19,7 @@ SocialConnect is a simple, functional social media app built as a practice proje
 ## 🧰 Tech Stack
 
 - **Frontend:** React.js, Tailwind CSS, React Router
-- **Backend/Services:** Firebase (Auth, Firestore)
+- **Backend/Services:** Firebase (Auth, Firestore, Storage)
 
 ---
 
